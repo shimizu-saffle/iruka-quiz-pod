@@ -1,5 +1,5 @@
-import 'package:iruka_quiz_pod_client/iruka_quiz_pod_client.dart';
 import 'package:flutter/material.dart';
+import 'package:iruka_quiz_pod_client/iruka_quiz_pod_client.dart';
 
 // Sets up a singleton client object that can be used to talk to the server from
 // anywhere in our app. The client is generated from your server code.
@@ -44,12 +44,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final _textEditingController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    _resultMessage = await client.example.hello('PK');
+    setState(() {});
+  }
+
   // Calls the `hello` method of the `example` endpoint. Will set either the
   // `_resultMessage` or `_errorMessage` field, depending on if the call
   // is successful.
   void _callHello() async {
     try {
-      final result = await client.example.hello(_textEditingController.text);
+      final result = await client.testEndPoint.getTest();
       setState(() {
         _resultMessage = result;
       });

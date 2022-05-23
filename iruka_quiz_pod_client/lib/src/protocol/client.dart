@@ -24,8 +24,21 @@ class _EndpointExample extends EndpointRef {
   }
 }
 
+class _EndpointTestEndPoint extends EndpointRef {
+  @override
+  String get name => 'testEndPoint';
+
+  _EndpointTestEndPoint(EndpointCaller caller) : super(caller);
+
+  Future<String> getTest() async {
+    return await caller
+        .callServerEndpoint('testEndPoint', 'getTest', 'String', {});
+  }
+}
+
 class Client extends ServerpodClient {
   late final _EndpointExample example;
+  late final _EndpointTestEndPoint testEndPoint;
 
   Client(String host,
       {SecurityContext? context,
@@ -36,11 +49,13 @@ class Client extends ServerpodClient {
             errorHandler: errorHandler,
             authenticationKeyManager: authenticationKeyManager) {
     example = _EndpointExample(this);
+    testEndPoint = _EndpointTestEndPoint(this);
   }
 
   @override
   Map<String, EndpointRef> get endpointRefLookup => {
         'example': example,
+        'testEndPoint': testEndPoint,
       };
 
   @override
